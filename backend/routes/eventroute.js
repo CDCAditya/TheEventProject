@@ -3,10 +3,10 @@ import Event from "../models/eventmodel.js";
 import {validateEventData} from "../middlewares/eventMiddleware.js";
 const router = express.Router();
 
-router.post('/', validateEventData, async (req, res) => {
+router.post('/', async (req, res) => {
     try {
-        const { authorId, title, description, date, category, status, other } = req.body;
-        const event = new Event({ authorId, title, description, date, category, status, other });
+        const { title, mentorName,category, DateAndTime, location, eventType,Highlight,Button, upcoming,preRecorded,image} = req.body;
+        const event = new Event({title,mentorName,category,DateAndTime,location,eventType,Highlight,Button,upcoming,preRecorded,image});
         const savedEvent = await event.save();
         res.status(201).json(savedEvent);
     } catch (error) {
@@ -17,15 +17,15 @@ router.post('/', validateEventData, async (req, res) => {
 
 
 // READ: Route to get all events
-// router.get('/get', async (req, res) => {
-//     try {
-//         const events = await Event.find();
-//        const resp =  res.json(events);
-//         console.log(resp);
-//     } catch (error) {
-//         res.status(500).json({ message: error.message });
-//     }
-// });
+router.get('/get', async (req, res) => {
+    try {
+        const events = await Event.find();
+       const resp =  res.json(events);
+        console.log(resp);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
 
 // // READ: Route to get a specific event by ID
 // router.get('/events/:id', getEvent, (req, res) => {
