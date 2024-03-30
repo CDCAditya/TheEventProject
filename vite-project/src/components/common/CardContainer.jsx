@@ -1,14 +1,38 @@
 import React, { useEffect, useState } from 'react';
-import data from "../../constants/data.json";
+// import data from "../../constants/data.json";
 import CardIndividual from './CardInterface';
 import { Link } from 'react-router-dom';
 import SideNav from '../core/SideNavbar';
 
 const CardContainer = () => {
-  let [AllEvents, setAllEvents] = useState(data.eventsList);
-  const [events, setEvents] = useState(AllEvents.filter(event => event.upcoming === 'true'));
+  //useEffect to setData from api request
+  const [data, setData] = useState(null);
+  const [events, setEvents] = useState([]);
   const [activeEvent, setActiveEvent] = useState("upcoming");
   const [selectedCategory, setSelectedCategory] = useState("Spirituality");
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch('http://localhost:3000/events/get');
+                const jsonData = await response.json();
+                setData(jsonData);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData(); // Call the async function immediately
+
+    }, []);
+
+    useEffect(() => {
+      if (data) {
+        // setAllEvents(data);
+        setEvents(data.filter(event => event.upcoming === 'true'));
+      }
+    }, [data]);
+
 
   const handleCategoryChange = (newCategory) => {
     setSelectedCategory(newCategory);
@@ -16,16 +40,16 @@ const CardContainer = () => {
 
 
   const handleUpcomingEvent = () => {
-    setEvents(AllEvents.filter(event => event.upcoming === 'true'));
+    setEvents(data.filter(event => event.upcoming === 'true'));
     setActiveEvent("upcoming");
   };
   const handlePrerecordedEvent = () => {
-    setEvents(AllEvents.filter(event => event['pre-recorded'] === 'true'));
+    setEvents(data.filter(event => event['pre-recorded'] === 'true'));
     setActiveEvent("pre-recorded");
   };
 
   const handle = () => {
-    setEvents(AllEvents.filter(event => event.request === 'true'))
+    setEvents(data.filter(event => event.request === 'true'))
   }
 
   return (

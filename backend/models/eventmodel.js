@@ -4,13 +4,53 @@ import mongoose from "mongoose";
 
 // Define the event schema
 const eventSchema = new mongoose.Schema({
-    authorId: String, // Assuming authorId is a string
-    title: String,
-    description: String,
-    date: Date,
-    category: String,
-    status: String,
-    other: String // You may want to define other properties based on your requirements
+    // eventId: {
+    //     type: String,
+    //     required: true
+    // },
+    title: {
+        Type: String,
+        // required: true
+    },
+    mentorName:{
+        type :String,
+        // required:true
+    },
+    category:{
+        type:String
+    },
+    DateAndTime:{
+        type:String,
+    },
+    location:{
+        type:String
+    },
+    eventType:{
+        type:String
+    },
+    Highlight:{
+        type:String,
+    },
+    Button:{
+        type:String,
+        default:"Watch Now"
+    },
+    upcoming:{
+        type:String,
+    },
+    preRecorded:{//can't use pre-recorded so we have to change in frontend
+        type:Boolean,
+    },
+    image:{
+        type:String
+    }
+    // authorId: String, // Assuming authorId is a string
+    // title: String,
+    // description: String,
+    // date: Date,
+    // category: String,
+    // status: String,
+    // other: String // You may want to define other properties based on your requirements
 });
 
 // Create the Event model
