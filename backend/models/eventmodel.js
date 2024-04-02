@@ -9,7 +9,7 @@ const eventSchema = new mongoose.Schema({
     //     required: true
     // },
     title: {
-        Type: String,
+        type: String,
         // required: true
     },
     mentorName:{
@@ -39,7 +39,7 @@ const eventSchema = new mongoose.Schema({
         type:String,
     },
     preRecorded:{//can't use pre-recorded so we have to change in frontend
-        type:Boolean,
+        type:String,
     },
     image:{
         type:String

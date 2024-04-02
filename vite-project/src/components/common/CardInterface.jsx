@@ -3,7 +3,7 @@
 import React from 'react';
 
 const CardInterface = ({event}) => {
-  console.log(typeof event.DateAndTime);
+  console.log(event);
   return (
     <div key={event.eventId} className="border-2 rounded-lg p-2 flex flex-col justify-between items-center m-3 ">
       <div className="">
