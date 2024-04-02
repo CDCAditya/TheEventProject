@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 // import data from "../../constants/data.json";
-import CardIndividual from './CardInterface';
+import CardInterface from './CardInterface';
 import { Link } from 'react-router-dom';
 import SideNav from '../core/SideNavbar';
 
@@ -10,25 +10,23 @@ const CardContainer = () => {
   const [events, setEvents] = useState([]);
   const [activeEvent, setActiveEvent] = useState("upcoming");
   const [selectedCategory, setSelectedCategory] = useState("Spirituality");
-
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await fetch('http://localhost:3000/events/get');
                 const jsonData = await response.json();
                 setData(jsonData);
+                setEvents(jsonData.filter(event => event.category === "Spirituality"));
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
-
         fetchData(); // Call the async function immediately
 
     }, []);
 
     useEffect(() => {
       if (data) {
-        // setAllEvents(data);
         setEvents(data.filter(event => event.upcoming === 'true'));
       }
     }, [data]);
@@ -36,21 +34,18 @@ const CardContainer = () => {
 
   const handleCategoryChange = (newCategory) => {
     setSelectedCategory(newCategory);
+    setEvents(data.filter(event => event.category === newCategory));
   };
-
 
   const handleUpcomingEvent = () => {
-    setEvents(data.filter(event => event.upcoming === 'true'));
+    setEvents(data.filter(event => event.upcoming === 'True'));
     setActiveEvent("upcoming");
   };
+
   const handlePrerecordedEvent = () => {
-    setEvents(data.filter(event => event['pre-recorded'] === 'true'));
+    setEvents(data.filter(event => event['preRecorded'] === 'True'));
     setActiveEvent("pre-recorded");
   };
-
-  const handle = () => {
-    setEvents(data.filter(event => event.request === 'true'))
-  }
 
   return (
     <>
@@ -73,7 +68,7 @@ const CardContainer = () => {
               .filter((item) => item.category === selectedCategory)
               .map((item, index) => {
                 return (
-                  <CardIndividual key={index} event={item} />
+                  <CardInterface key={index} event={item} />
                 );
               })}
           </div>

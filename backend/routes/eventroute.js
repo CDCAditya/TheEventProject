@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post('/', async (req, res) => {
     try {
-        const { title, mentorName,category, DateAndTime, location, eventType,Highlight,Button, upcoming,preRecorded,image} = req.body;
+        const { title, mentorName, category, DateAndTime, location, eventType, Highlight, Button, upcoming, preRecorded, image} = req.body;
         const event = new Event({title,mentorName,category,DateAndTime,location,eventType,Highlight,Button,upcoming,preRecorded,image});
         const savedEvent = await event.save();
         res.status(201).json(savedEvent);
