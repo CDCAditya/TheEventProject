@@ -7,29 +7,28 @@ import SideNav from '../core/SideNavbar';
 const CardContainer = () => {
   //useEffect to setData from api request
   const [data, setData] = useState(null);
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState(null);
   const [activeEvent, setActiveEvent] = useState("upcoming");
   const [selectedCategory, setSelectedCategory] = useState("Spirituality");
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch('http://localhost:3000/events/get');
-                const jsonData = await response.json();
-                setData(jsonData);
-                setEvents(jsonData.filter(event => event.category === "Spirituality"));
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-        fetchData(); // Call the async function immediately
-
-    }, []);
-
-    useEffect(() => {
-      if (data) {
-        setEvents(data.filter(event => event.upcoming === 'true'));
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/events/get');
+        const jsonData = await response.json();
+        setData(jsonData);
+        setEvents(jsonData.filter(event => event.category === "Spirituality"));
+      } catch (error) {
+        console.error('Error fetching data:', error);
       }
-    }, [data]);
+    };
+    fetchData(); // Call the async function immediately
+  }, []);
+
+  useEffect(() => {
+    () => {
+      setEvents(data.filter(event => event.category === selectedCategory));
+    }
+  }, [events]);
 
 
   const handleCategoryChange = (newCategory) => {
@@ -38,12 +37,12 @@ const CardContainer = () => {
   };
 
   const handleUpcomingEvent = () => {
-    setEvents(data.filter(event => event.upcoming === 'True'));
+    setEvents(data.filter(event => event.eventType === 'Upcoming'));
     setActiveEvent("upcoming");
   };
 
   const handlePrerecordedEvent = () => {
-    setEvents(data.filter(event => event['preRecorded'] === 'True'));
+    setEvents(data.filter(event => event.eventType === 'Pre-recorded'));
     setActiveEvent("pre-recorded");
   };
 
@@ -64,13 +63,14 @@ const CardContainer = () => {
                 <div  onClick={handle} className={activeEvent === 'schedule' ? 'text-xl transition-all duration-400 border-b-4 border-customColor cursor-pointer hover:text-customColor' : 'text-xl transition-all duration-400 border-b-4 border-side cursor-pointer hover:text-customColor'}><a >Schedule Event</a></div> */}
           </div>
           <div className="grid grid-col-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {events
-              .filter((item) => item.category === selectedCategory)
-              .map((item, index) => {
-                return (
+            {events === null ?
+              (<div className='text-center text-2xl font-semibold'>No events found</div>) :
+              (events
+                .filter((item) => item.category === selectedCategory && item.eventType)
+                .map((item, index) =>
                   <CardInterface key={index} event={item} />
-                );
-              })}
+                ))
+            }
           </div>
         </div>
       </div>

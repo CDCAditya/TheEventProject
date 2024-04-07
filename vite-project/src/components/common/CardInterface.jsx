@@ -3,7 +3,9 @@
 import React from 'react';
 
 const CardInterface = ({event}) => {
+
   console.log(event);
+
   return (
     <div key={event.eventId} className="border-2 rounded-lg p-2 flex flex-col justify-between items-center m-3 ">
       <div className="">
@@ -20,8 +22,8 @@ const CardInterface = ({event}) => {
         <br />
         <div className="flex justify-between text-sm text-gray-600 ">
           <div className='flex flex-col md:flex-row gap-1'>
-            <p className=''>{event.DateAndTime.substr(0,10)}</p>
-            <p>{event.DateAndTime.substr(11,13)}</p>
+            <p className=''>{event.DateAndTime.startDateandTime.substr(0,10)}</p>
+            <p>{event.DateAndTime.startDateandTime.substr(11,13)}</p>
           </div>
           <div className="flex items-center">
             <img src="/pin.png" alt="" className="h-4" />

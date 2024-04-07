@@ -4,29 +4,45 @@ import mongoose from "mongoose";
 
 // Define the event schema
 const eventSchema = new mongoose.Schema({
-    // eventId: {
-    //     type: String,
-    //     required: true
-    // },
     title: {
         type: String,
-        // required: true
+        required: true
     },
     mentorName:{
         type :String,
-        // required:true
+        required:true
+    },
+    email:{
+        type :String,
+        required:true
     },
     category:{
-        type:String
+        type:String,
+        enum : ['Spirituality','Technology','Business','Sports'],
+        default: 'Spirituality',
+        required:true
     },
     DateAndTime:{
-        type:String,
+        type: {
+            startDateandTime: {
+                type: String,
+                required: true
+            },
+            endDateandTime: {
+                type: String,
+                required: true
+            },
+        },
+        required: true
     },
     location:{
         type:String
     },
     eventType:{
-        type:String
+        type:String,
+        enum : ['Upcoming','Pre-recorded','Live'],
+        default: 'Upcoming',
+        required:true
     },
     Highlight:{
         type:String,
@@ -35,24 +51,25 @@ const eventSchema = new mongoose.Schema({
         type:String,
         default:"Watch Now"
     },
-    upcoming:{
-        type:String,
-    },
-    preRecorded:{//can't use pre-recorded so we have to change in frontend
-        type:String,
-    },
     image:{
         type:String
+    },
+    link:{
+        type:String
+    },
+    description:{
+        type:String
+    },
+    host:{
+        type:String
+    },
+    sponsors:[
+        {type: String}
+    ],
+    targetaudience:{
+        type:String
     }
-    // authorId: String, // Assuming authorId is a string
-    // title: String,
-    // description: String,
-    // date: Date,
-    // category: String,
-    // status: String,
-    // other: String // You may want to define other properties based on your requirements
 });
-
 // Create the Event model
 const Event = mongoose.model('Event', eventSchema);
 
