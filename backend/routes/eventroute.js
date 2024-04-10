@@ -1,5 +1,6 @@
 import  express  from "express";
 import Event from "../models/eventmodel.js";
+import { mongoose } from "mongoose";
 import {validateEventData} from "../middlewares/eventMiddleware.js";
 const router = express.Router();
 
@@ -26,6 +27,30 @@ router.get('/get', async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
+
+router.get('/get/:id', async (req, res) => {
+    try {
+      const eventId = req.params.id;
+  
+      // Check if the ID is a valid ObjectId
+      if (!mongoose.isValidObjectId(eventId)) {
+        return res.status(400).json({ message: 'Invalid ID format' });
+      }
+  
+      // Find event by ID in the database
+      const event = await Event.findById(eventId);
+  
+      if (!event) {
+        return res.status(404).json({ message: 'Event not found' });
+      }
+  
+      // Return the event as JSON
+      res.json(event);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({'Message': 'Server Error'});
+    }
+  });
 
 // // READ: Route to get a specific event by ID
 // router.get('/events/:id', getEvent, (req, res) => {
