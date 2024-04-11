@@ -45,12 +45,32 @@ router.get('/get/:id', async (req, res) => {
       }
   
       // Return the event as JSON
-      res.json(event);
+      res.status(200).json(event);
     } catch (err) {
       console.error(err);
       res.status(500).json({'Message': 'Server Error'});
     }
   });
+
+  // GET request to fetch events by category
+router.get('/getCategoryEvent/:category', async (req, res) => {
+  const category = req.params.category;
+
+  try {
+    // Find events by category in the database
+    const events = await Event.find({ category: category });
+
+    if (!events || events.length === 0) {
+      return res.status(404).json({ message: "No events found for this category" });
+    }
+
+    // If events found, add them to JSON response
+    res.json(events);
+  } catch (error) {
+    console.error("Error fetching events by category:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
 
 // // READ: Route to get a specific event by ID
 // router.get('/events/:id', getEvent, (req, res) => {
